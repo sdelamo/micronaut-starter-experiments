@@ -43,6 +43,7 @@ class SpringBootStarterSpec extends ApplicationContextSpec implements CommandOut
     void 'no Micronaut files get generated with springBoot feature and maven'() {
         given:
         Options options = new Options(Language.JAVA, TestFramework.JUNIT, BuildTool.MAVEN).withFramework(SpringBootFramework.FRAMEWORK_SPRING_BOOT)
+        int majorVersion = options.getJavaVersion().majorVersion();
 
         when:
         Map<String, String> output = generate(ApplicationType.DEFAULT, options, [SpringBootStarter.NAME])
@@ -54,6 +55,7 @@ class SpringBootStarterSpec extends ApplicationContextSpec implements CommandOut
         when:
         String pom = output['pom.xml']
 
+
         then:
         !pom.contains("micronaut")
         pom.contains("spring-boot-maven-plugin")
@@ -61,7 +63,7 @@ class SpringBootStarterSpec extends ApplicationContextSpec implements CommandOut
         pom.contains("<relativePath/>")
         pom.contains("<relativePath/>")
         pom.contains("spring-boot-starter-test")
-        pom.contains("<java.version>17</java.version>")
+        pom.contains("<java.version>" + majorVersion + "</java.version>")
     }
 
     void 'no Micronaut files get generated with springBoot feature'() {
