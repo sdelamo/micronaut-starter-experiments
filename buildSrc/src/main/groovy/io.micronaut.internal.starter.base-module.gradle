@@ -13,6 +13,13 @@ ext {
     isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
 }
 
+configurations.configureEach {
+    resolutionStrategy {
+        cacheDynamicVersionsFor 0, 'minutes'
+        cacheChangingModulesFor 0, 'minutes'
+    }
+}
+
 configurations.all {
     resolutionStrategy {
         force "io.micronaut:micronaut-core-bom:${rootProject.micronautCoreVersion}"
