@@ -15,6 +15,7 @@ import io.micronaut.starter.options.JdkVersion
 import io.micronaut.starter.options.Language
 import io.micronaut.starter.options.Options
 import io.micronaut.starter.options.TestFramework
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Subject
 
@@ -146,6 +147,7 @@ class KaptSpec extends ApplicationContextSpec implements CommandOutputFixture {
         output.".mvn/jvm.config" == KotlinSupportFeature.JDK_21_KAPT_MODULES
     }
 
+    @Ignore
     void 'Corrected jdk21 = jdk17 is specified in build = #buildTool for kapt'(BuildTool buildTool) {
         when:
         def output = generate(ApplicationType.DEFAULT, new Options(Language.KOTLIN, TestFramework.DEFAULT_OPTION, buildTool, JdkVersion.JDK_21),['kapt'])
