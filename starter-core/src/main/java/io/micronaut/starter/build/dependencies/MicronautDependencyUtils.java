@@ -27,6 +27,7 @@ public final class MicronautDependencyUtils {
             .compile()
             .build();
 
+    public static final String GROUP_ID_MICRONAUT_LANGCHAIN4J = "io.micronaut.langchain4j";
     public static final String GROUP_ID_MICRONAUT_GUICE = "io.micronaut.guice";
     public static final String GROUP_ID_MICRONAUT = "io.micronaut";
     public static final String GROUP_ID_MICRONAUT_TESTRESOURCES = "io.micronaut.testresources";
@@ -85,6 +86,11 @@ public final class MicronautDependencyUtils {
 
     private MicronautDependencyUtils() {
 
+    }
+
+    @NonNull
+    public static Dependency.Builder langchain4j() {
+        return micronautDependency(GROUP_ID_MICRONAUT_LANGCHAIN4J);
     }
 
     @NonNull
