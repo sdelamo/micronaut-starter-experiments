@@ -9,7 +9,6 @@ import jakarta.inject.Inject
 import spock.lang.Ignore
 import spock.lang.Specification
 
-@Ignore("OpenAPI is currently broken")
 @MicronautTest
 class OpenAPISpec extends Specification {
 
