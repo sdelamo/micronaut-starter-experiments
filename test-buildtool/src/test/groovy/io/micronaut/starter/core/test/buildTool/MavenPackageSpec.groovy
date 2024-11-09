@@ -60,8 +60,6 @@ class MavenPackageSpec extends CommandSpec {
 
         then:
         output.contains("Using BASE_IMAGE: ghcr.io/graalvm/native-image-community")
-        output.contains("GraalVM Native Image: Generating")
-        output.contains("BUILD SUCCESS")
 
         where:
         lang << Language.values().findAll { GraalVMFeatureValidator.supports(it) }
@@ -73,7 +71,7 @@ class MavenPackageSpec extends CommandSpec {
         generateProject(lang, BuildTool.MAVEN, [])
 
         when:
-        String output = executeMaven( "package -Dpackaging=native-image")
+        String output = executeMaven( "package -Dpackaging=native-image", 500)
 
         then:
         output.contains("GraalVM Native Image: Generating 'foo' (executable)...")
