@@ -17,7 +17,7 @@ jobs:
           java-version: '21'
       - id: 'auth'
         name: 'Authenticate to Google Cloud' # https://github.com/google-github-actions/auth
-        uses: 'google-GitHub-actions/auth@v2.1.7'
+        uses: 'google-github-actions/auth@v2.1.7'
         with:
           create_credentials_file: true
           project_id: ${{ secrets.GCLOUD_PROJECT }}
