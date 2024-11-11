@@ -1,0 +1,42 @@
+name: Snapshot to GCR
+on:
+  push:
+    branches:
+      - 4.7.x
+jobs:
+  deploy:
+    name: Deploy job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '21'
+      - name: Run Tests
+        run: ./gradlew starter-api:test starter-web-netty:test starter-gcp-function:shadowJar
+        env:
+          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          GRADLE_ENTERPRISE_CACHE_USERNAME: ${{ secrets.GRADLE_ENTERPRISE_CACHE_USERNAME }}
+          GRADLE_ENTERPRISE_CACHE_PASSWORD: ${{ secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD }}
+          PREDICTIVE_TEST_SELECTION: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
+      - name: Build Docker image
+        run: |
+          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }}:snapshot"
+      - name: Authenticate into Google Cloud Platform
+        uses: google-github-actions/setup-gcloud@v0.2.1
+        with:
+          project_id: ${{ secrets.GCLOUD_PROJECT }}
+          service_account_email: ${{ secrets.GCLOUD_EMAIL }}
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+      - name: Configure Docker to use Google Cloud Platform
+        run: gcloud auth configure-docker --quiet
+      - name: Push image to Google Cloud Container Registry
+        run: |
+          ./gradlew starter-web-netty:dockerPush -PdockerImageName="gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }}:snapshot"
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud components install beta --quiet
+          gcloud run deploy ${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }} --quiet --image gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }}:snapshot --project ${{ secrets.GCLOUD_PROJECT }} --region  us-central1 --update-env-vars=HOSTNAME="snapshot.micronaut.io",GITHUB_OAUTH_APP_CLIENT_ID=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_ID }},GITHUB_OAUTH_APP_CLIENT_SECRET=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_SECRET }} --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_EMAIL }}

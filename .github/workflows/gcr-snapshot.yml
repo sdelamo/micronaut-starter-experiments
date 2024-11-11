@@ -3,9 +3,13 @@ on:
   push:
     branches:
       - 4.7.x
+env:
+  REGION: us-central1
 jobs:
-  deploy:
-    name: Deploy job
+  gitHub-actions-wif:
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -17,26 +21,31 @@ jobs:
           java-version: '21'
       - name: Run Tests
         run: ./gradlew starter-api:test starter-web-netty:test starter-gcp-function:shadowJar
-        env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-          GRADLE_ENTERPRISE_CACHE_USERNAME: ${{ secrets.GRADLE_ENTERPRISE_CACHE_USERNAME }}
-          GRADLE_ENTERPRISE_CACHE_PASSWORD: ${{ secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD }}
-          PREDICTIVE_TEST_SELECTION: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
-      - name: Build Docker image
-        run: |
-          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }}:snapshot"
-      - name: Authenticate into Google Cloud Platform
-        uses: google-github-actions/setup-gcloud@v0.2.1
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-GitHub-actions/auth@v2.1.7'
         with:
-          project_id: ${{ secrets.GCLOUD_PROJECT }}
-          service_account_email: ${{ secrets.GCLOUD_EMAIL }}
-          service_account_key: ${{ secrets.GCLOUD_AUTH }}
-      - name: Configure Docker to use Google Cloud Platform
-        run: gcloud auth configure-docker --quiet
-      - name: Push image to Google Cloud Container Registry
-        run: |
-          ./gradlew starter-web-netty:dockerPush -PdockerImageName="gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }}:snapshot"
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud components install beta --quiet
-          gcloud run deploy ${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }} --quiet --image gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }}:snapshot --project ${{ secrets.GCLOUD_PROJECT }} --region  us-central1 --update-env-vars=HOSTNAME="snapshot.micronaut.io",GITHUB_OAUTH_APP_CLIENT_ID=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_ID }},GITHUB_OAUTH_APP_CLIENT_SECRET=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_SECRET }} --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_EMAIL }}
+          create_credentials_file: true
+          workload_identity_provider: ${{ secrets.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_EMAIL }}
+      - name: 'Networking activities'
+        run: |-
+          gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+          gcloud compute firewall-rules list --format="table(
+              name,
+              network,
+              direction,
+              priority
+          )"
+        continue-on-error: true
+#      - id: 'deploy-cloud-run'
+#        name: 'Deploy Cloud Run Hello World Python App'
+#        uses: 'google-GitHub-actions/deploy-cloudrun@v1'
+#        with:
+#          service: 'hello-world'
+#          region: 'us-central1'
+#
+#
+#      - name: 'Use output'
+#        run: 'curl "${{ steps.deploy-cloud-run.outputs.url }}"'
+#        continue-on-error: true
