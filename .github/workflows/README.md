@@ -13,7 +13,7 @@ gcloud iam workload-identity-pools create github-actions-pool --location="global
 ## Create a workload identity pool provider
 
 ```
-gcloud iam workload-identity-pools providers create-oidc github-actions-oidc --workload-identity-pool="github-actions-pool" --issuer-uri="https://token.actions.GitHubusercontent.com/" --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.repository_owner=assertion.repository_owner,attribute.branch=assertion.sub.extract('/heads/{branch}/')" --location=global --attribute-condition="assertion.repository_owner=='sdelamo'"
+gcloud iam workload-identity-pools providers create-oidc github-actions-oidc --project=micronaut-guides --workload-identity-pool="github-actions-pool" --issuer-uri="https://token.actions.githubusercontent.com" --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.repository_owner=assertion.repository_owner,attribute.branch=assertion.sub.extract('/heads/{branch}/')" --location=global --attribute-condition="assertion.repository_owner=='sdelamo'"
 ```
 
 ## Create a service account for each repository and assign them appropriate IAM permissions
