@@ -33,7 +33,7 @@ gcloud iam service-accounts add-iam-policy-binding mn-starter-networking-sa@micr
 ```
 
 ```
-gcloud iam service-accounts add-iam-policy-binding mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com --role="roles/iam.workloadIdentityUser" --member="principal://iam.googleapis.com/projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/subject/repo:sdelamo/micronaut-starter-experiments:ref:refs/heads/main"
+gcloud iam service-accounts add-iam-policy-binding mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com --role="roles/iam.workloadIdentityUser" --member="principal://iam.googleapis.com/projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/subject/repo:sdelamo/micronaut-starter-experiments:ref:refs/heads/4.7.x"
 ```
 
 ## Create a Google Artifiact Repository
