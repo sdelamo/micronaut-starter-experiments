@@ -22,37 +22,26 @@ jobs:
         name: 'Authenticate to Google Cloud' # https://github.com/google-github-actions/auth
         uses: 'google-github-actions/auth@v2.1.7'
         with:
-          token_format: 'access_token'
+          create_credentials_file: true
           workload_identity_provider: ${{ secrets.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_EMAIL }}
 #      - name: Run Tests
 #        run: ./gradlew starter-api:test starter-web-netty:test starter-gcp-function:shadowJar
 #        env:
 #          PREDICTIVE_TEST_SELECTION: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
-#      - name: "Set up Cloud SDK"
-#        uses: "google-github-actions/setup-gcloud@v2.1.2"
-#      - name: "Use gcloud CLI"
-#        run: "gcloud info"
-      - name: "Docker Auth"
-        id: 'docker-auth'
-        uses: 'docker/login-action@v3.3.0'
-        with:
-          username: 'oauth2accesstoken'
-          password: ${{ steps.auth.outputs.access_token }}
-          registry: 'us-central1-docker.pkg.dev'
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2.1.2"
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
+      - name: "Docker auth"
+        run: |-
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
       - name: Build Docker image
         run: |
-          ./gradlew starter-web-netty:dockerPush -PdockerImageName="us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot"
-#      - name: 'Docker Push'
-#        id: 'push-image'
-#        uses: docker/build-push-action@v6.9.0
-#        with:
-#          push: true
-#          tags: us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot
-#      - name: Push image to Google Cloud Artifact Registry
-#        run: |
-#          gcloud auth print-access-token --impersonate-service-account  mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev
-#          docker push us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot
+          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot"
+      - name: Push image to Google Cloud Artifact Registry
+        run: |
+          docker push us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot
 #      - name: Deploy to Cloud Run
 #        run: |
 #          gcloud run deploy ${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }} --quiet --image ${{ secrets.GCLOUD_ARTIFACT_REPOSITORY}}:snapshot --project ${{ secrets.GCLOUD_PROJECT }} --region  ${{ secrets.GCLOUD_REGION }} --update-env-vars=HOSTNAME="snapshot.micronaut.io",GITHUB_OAUTH_APP_CLIENT_ID=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_ID }},GITHUB_OAUTH_APP_CLIENT_SECRET=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_SECRET }} --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_SERVICE_ACCOUNT_EMAIL }}
