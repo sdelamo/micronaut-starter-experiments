@@ -52,7 +52,7 @@ Name: `GCLOUD_SERVICE_ACCOUNT_EMAIL`
 Value: `mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com`
 
 Name: `GCLOUD_ARTIFACT_REPOSITORY`
-Value: `us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter`
+Value: `micronaut-starter`
 
 Name: `GCLOUD_REGION`
 Value: `us-central1`
