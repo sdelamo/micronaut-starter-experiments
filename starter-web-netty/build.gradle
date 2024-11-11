@@ -14,7 +14,7 @@ micronaut {
 dependencies {
 
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
-    implementation("io.micronaut:micronaut-context")
+
     implementation(project(":starter-api"))
     implementation("io.micronaut.gcp:micronaut-gcp-http-client")
     implementation("io.micronaut.crac:micronaut-crac")
