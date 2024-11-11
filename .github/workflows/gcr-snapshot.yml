@@ -25,10 +25,10 @@ jobs:
           create_credentials_file: true
           workload_identity_provider: ${{ secrets.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_EMAIL }}
-#      - name: Run Tests
-#        run: ./gradlew starter-api:test starter-web-netty:test starter-gcp-function:shadowJar
-#        env:
-#          PREDICTIVE_TEST_SELECTION: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
+      - name: Run Tests
+        run: ./gradlew starter-api:test starter-web-netty:test starter-gcp-function:shadowJar
+        env:
+          PREDICTIVE_TEST_SELECTION: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v2.1.2"
       - name: "Use gcloud CLI"
@@ -38,10 +38,10 @@ jobs:
           gcloud auth configure-docker ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev --quiet
       - name: Build Docker image
         run: |
-          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/micronaut-guides/micronaut-starter/micronaut-starter:snapshot"
+          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/${{ GCLOUD_PROJECT }}/${{ GCLOUD_ARTIFACT_REPOSITORY }}/micronaut-starter:snapshot"
       - name: Push image to Google Cloud Artifact Registry
         run: |
-          docker push ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/micronaut-guides/micronaut-starter/micronaut-starter:snapshot
+          docker push ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/${{ GCLOUD_PROJECT }}/${{ GCLOUD_ARTIFACT_REPOSITORY }}/micronaut-starter:snapshot
 #      - name: Deploy to Cloud Run
 #        run: |
 #          gcloud run deploy ${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }} --quiet --image ${{ secrets.GCLOUD_ARTIFACT_REPOSITORY}}:snapshot --project ${{ secrets.GCLOUD_PROJECT }} --region  ${{ secrets.GCLOUD_REGION }} --update-env-vars=HOSTNAME="snapshot.micronaut.io",GITHUB_OAUTH_APP_CLIENT_ID=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_ID }},GITHUB_OAUTH_APP_CLIENT_SECRET=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_SECRET }} --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_SERVICE_ACCOUNT_EMAIL }}
