@@ -29,11 +29,11 @@ gcloud iam service-accounts create mn-starter-networking-sa --display-name="Micr
 ## Add IAM bindings for the workload pool
 
 ```
-gcloud iam service-accounts add-iam-policy-binding mn-starter-networking-sa@micronaut-guides.iam.gserviceaccount.com --role="roles/iam.workloadIdentityUser" --member="principalSet://iam.googleapis.com/projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/attribute.repository/sdelamo/micronaut-starter"
+gcloud iam service-accounts add-iam-policy-binding mn-starter-networking-sa@micronaut-guides.iam.gserviceaccount.com --role="roles/iam.workloadIdentityUser" --member="principalSet://iam.googleapis.com/projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/attribute.repository/sdelamo/micronaut-starter-experiments"
 ```
 
 ```
-gcloud iam service-accounts add-iam-policy-binding mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com --role="roles/iam.workloadIdentityUser" --member="principal://iam.googleapis.com/projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/subject/repo:sdelamo/micronaut-starter:ref:refs/heads/main"
+gcloud iam service-accounts add-iam-policy-binding mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com --role="roles/iam.workloadIdentityUser" --member="principal://iam.googleapis.com/projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/subject/repo:sdelamo/micronaut-starter-experiments:ref:refs/heads/main"
 ```
 
 ## Create a Google Artifiact Repository
@@ -56,3 +56,6 @@ Value: `us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter`
 
 Name: `GCLOUD_REGION`
 Value: `us-central1`
+
+Name: `GCLOUD_PROJECT`
+Value: `micronaut-guides`
