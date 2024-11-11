@@ -39,13 +39,8 @@ gcloud iam service-accounts add-iam-policy-binding mn-starter-app-sa@micronaut-g
 
 ### GitHub Action Secrets 
 
-Name: `GOOGLE_APPLICATION_CREDENTIALS`
+Name: `GOOGLE_APPLICATION_CREDENTIALS`  
+Value: `projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-oidc`
 
-Value: 
-```
-projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-oidc
-```
-
-Name: `GCLOUD_SERVICE_ACCOUNT_EMAIL`
-
+Name: `GCLOUD_SERVICE_ACCOUNT_EMAIL`  
 Value: `mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com`
