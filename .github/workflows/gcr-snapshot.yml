@@ -41,7 +41,7 @@ jobs:
           ./gradlew starter-web-netty:dockerBuild -PdockerImageName="${{ secrets.GCLOUD_ARTIFACT_REPOSITORY}}:snapshot"
       - name: Push image to Google Cloud Artifact Registry
         run: |
-          ./gradlew starter-web-netty:dockerPush -PdockerImageName="${{ secrets.GCLOUD_ARTIFACT_REPOSITORY}}:snapshot"
+          docker push ${{ secrets.GCLOUD_ARTIFACT_REPOSITORY}}:snapshot
 #      - name: Authenticate into Google Cloud Platform
 #        uses: google-github-actions/setup-gcloud@v2.1.2
 #        with:

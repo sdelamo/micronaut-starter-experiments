@@ -41,6 +41,7 @@ gcloud iam service-accounts add-iam-policy-binding mn-starter-app-sa@micronaut-g
 gcloud artifacts repositories create micronaut-starter --repository-format=docker --location=us-central1 --description="Micronaut Starter Artifact Repository"
 ```
 
+- [Enable IAM Service Account Credentials API](https://console.cloud.google.com/apis/library/iamcredentials.googleapis.com?project=micronaut-guides)
 
 ### GitHub Action Secrets 
 
