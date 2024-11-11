@@ -30,6 +30,7 @@ import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.starter.api.TestFramework;
 import io.micronaut.starter.api.create.AbstractCreateController;
+import io.micronaut.starter.api.event.ApplicationGeneratingEvent;
 import io.micronaut.starter.application.ApplicationType;
 import io.micronaut.starter.application.Project;
 import io.micronaut.starter.application.generator.GeneratorContext;
@@ -71,7 +72,7 @@ public class ZipCreateController extends AbstractCreateController implements Zip
      * @param projectGenerator The project generator
      * @param eventPublisher   The event publisher
      */
-    public ZipCreateController(ProjectGenerator projectGenerator, ApplicationEventPublisher eventPublisher) {
+    public ZipCreateController(ProjectGenerator projectGenerator, ApplicationEventPublisher<ApplicationGeneratingEvent> eventPublisher) {
         super(projectGenerator, eventPublisher);
     }
 

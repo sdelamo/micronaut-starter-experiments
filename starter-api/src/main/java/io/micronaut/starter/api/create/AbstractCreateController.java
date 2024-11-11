@@ -52,7 +52,7 @@ import java.util.List;
 public abstract class AbstractCreateController {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractCreateController.class);
     protected final ProjectGenerator projectGenerator;
-    private final ApplicationEventPublisher eventPublisher;
+    private final ApplicationEventPublisher<ApplicationGeneratingEvent> eventPublisher;
 
     /**
      * Abstract implementation for create controllers.
@@ -61,7 +61,7 @@ public abstract class AbstractCreateController {
      */
     protected AbstractCreateController(
             ProjectGenerator projectGenerator,
-            ApplicationEventPublisher eventPublisher) {
+            ApplicationEventPublisher<ApplicationGeneratingEvent> eventPublisher) {
         this.projectGenerator = projectGenerator;
         this.eventPublisher = eventPublisher;
     }

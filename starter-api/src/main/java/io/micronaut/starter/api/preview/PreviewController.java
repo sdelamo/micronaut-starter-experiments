@@ -26,6 +26,7 @@ import io.micronaut.starter.api.Relationship;
 import io.micronaut.starter.api.RequestInfo;
 import io.micronaut.starter.api.TestFramework;
 import io.micronaut.starter.api.create.AbstractCreateController;
+import io.micronaut.starter.api.event.ApplicationGeneratingEvent;
 import io.micronaut.starter.application.ApplicationType;
 import io.micronaut.starter.application.Project;
 import io.micronaut.starter.application.generator.ProjectGenerator;
@@ -63,7 +64,7 @@ public class PreviewController extends AbstractCreateController implements Previ
      * @param projectGenerator The project generator
      * @param eventPublisher The event publisher
      */
-    public PreviewController(ProjectGenerator projectGenerator, ApplicationEventPublisher eventPublisher) {
+    public PreviewController(ProjectGenerator projectGenerator, ApplicationEventPublisher<ApplicationGeneratingEvent> eventPublisher) {
         super(projectGenerator, eventPublisher);
     }
 
