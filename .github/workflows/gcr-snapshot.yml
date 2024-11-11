@@ -38,7 +38,7 @@ jobs:
           gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
       - name: Build Docker image
         run: |
-          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="micronaut-starter:snapshot"
+          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter/micronaut-starter:snapshot"
       - name: Push image to Google Cloud Artifact Registry
         run: |
           docker push us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter/micronaut-starter:snapshot
