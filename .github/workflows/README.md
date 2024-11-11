@@ -36,6 +36,11 @@ gcloud iam service-accounts add-iam-policy-binding mn-starter-networking-sa@micr
 gcloud iam service-accounts add-iam-policy-binding mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com --role="roles/iam.workloadIdentityUser" --member="principal://iam.googleapis.com/projects/290477064382/locations/global/workloadIdentityPools/github-actions-pool/subject/repo:sdelamo/micronaut-starter:ref:refs/heads/main"
 ```
 
+## Create a Google Artifiact Repository
+```
+gcloud artifacts repositories create micronaut-starter --repository-format=docker --location=us-central1 --description="Micronaut Starter Artifact Repository"
+```
+
 
 ### GitHub Action Secrets 
 
