@@ -1,7 +1,8 @@
-
 # Google Cloud Run
 
 [Configuring Workload Identity Federation for GitHub actions and Terraform Cloud](https://cloud.google.com/blog/products/identity-security/secure-your-use-of-third-party-tools-with-identity-federation)
+
+[Deploy to Coud Run with GitHub Actions](https://cloud.google.com/blog/products/devops-sre/deploy-to-cloud-run-with-github-actions/)
 
 ## Create a workload identity pool
 
