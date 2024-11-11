@@ -20,7 +20,6 @@ jobs:
         uses: 'google-github-actions/auth@v2.1.7'
         with:
           create_credentials_file: true
-          project_id: ${{ secrets.GCLOUD_PROJECT }}
           workload_identity_provider: ${{ secrets.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_EMAIL }}
       - name: Run Tests
