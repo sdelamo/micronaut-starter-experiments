@@ -41,6 +41,7 @@ jobs:
           ./gradlew starter-web-netty:dockerBuild -PdockerImageName="us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot"
       - name: Push image to Google Cloud Artifact Registry
         run: |
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev
           docker push us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot
 #      - name: Deploy to Cloud Run
 #        run: |
