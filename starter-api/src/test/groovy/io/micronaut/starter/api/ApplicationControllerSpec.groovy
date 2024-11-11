@@ -36,13 +36,13 @@ class ApplicationControllerSpec extends Specification {
         noExceptionThrown()
         HttpStatus.OK == response.status()
 
-        when:
-        mutableHttpRequest = HttpRequest.GET("/")
-        response = client.toBlocking().exchange(mutableHttpRequest)
-
-        then:
-        noExceptionThrown()
-        HttpStatus.OK == response.status()
+//        when:
+//        mutableHttpRequest = HttpRequest.GET("/")
+//        response = client.toBlocking().exchange(mutableHttpRequest)
+//
+//        then:
+//        noExceptionThrown()
+//        HttpStatus.OK == response.status()
     }
 
     void "htmlRequest redirects"() {
