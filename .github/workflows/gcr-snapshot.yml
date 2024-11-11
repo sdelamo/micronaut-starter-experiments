@@ -38,10 +38,11 @@ jobs:
           gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
       - name: Build Docker image
         run: |
-          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot"
+          ./gradlew starter-web-netty:dockerBuild
       - name: Push image to Google Cloud Artifact Registry
         run: |
-          docker push us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot
+          docker tag micronaut-starter us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot
+          docker push us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter
 #      - name: Deploy to Cloud Run
 #        run: |
 #          gcloud run deploy ${{ secrets.GCLOUD_SNAPSHOT_APP_NAME }} --quiet --image ${{ secrets.GCLOUD_ARTIFACT_REPOSITORY}}:snapshot --project ${{ secrets.GCLOUD_PROJECT }} --region  ${{ secrets.GCLOUD_REGION }} --update-env-vars=HOSTNAME="snapshot.micronaut.io",GITHUB_OAUTH_APP_CLIENT_ID=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_ID }},GITHUB_OAUTH_APP_CLIENT_SECRET=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_SECRET }} --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_SERVICE_ACCOUNT_EMAIL }}
