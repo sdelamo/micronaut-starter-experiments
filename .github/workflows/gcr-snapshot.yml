@@ -42,13 +42,13 @@ jobs:
           registry: 'us-central1-docker.pkg.dev'
       - name: Build Docker image
         run: |
-          ./gradlew starter-web-netty:dockerBuild -PdockerImageName="us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot"
-      - name: 'Docker Push'
-        id: 'push-image'
-        uses: docker/build-push-action@v6.9.0
-        with:
-          push: true
-          tags: us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot
+          ./gradlew starter-web-netty:dockerPush -PdockerImageName="us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot"
+#      - name: 'Docker Push'
+#        id: 'push-image'
+#        uses: docker/build-push-action@v6.9.0
+#        with:
+#          push: true
+#          tags: us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter:snapshot
 #      - name: Push image to Google Cloud Artifact Registry
 #        run: |
 #          gcloud auth print-access-token --impersonate-service-account  mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev
