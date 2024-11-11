@@ -49,3 +49,9 @@ Value: `projects/290477064382/locations/global/workloadIdentityPools/github-acti
 
 Name: `GCLOUD_SERVICE_ACCOUNT_EMAIL`  
 Value: `mn-starter-app-sa@micronaut-guides.iam.gserviceaccount.com`
+
+Name: `GCLOUD_ARTIFACT_REPOSITORY`
+Value: `us-central1-docker.pkg.dev/micronaut-guides/micronaut-starter`
+
+Name: `GCLOUD_REGION`
+Value: `us-central1`
